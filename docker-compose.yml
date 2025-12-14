@@ -1,21 +1,13 @@
-version: "3.8"
-
-networks:
-  app_net:
-
 services:
-  server:
-    build: ./server
-    ports:
-      - "8000:8000"
-    networks:
-      - app_net
-    command: python app.py
-
-  client:
-    build: ./client
-    depends_on:
-      - server
-    networks:
-      - app_net
-    command: python client.py
+  hello:
+    build:
+      context: ./source
+      dockerfile: Dockerfile
+    container_name: hello-service
+    environment:
+      - PYTHONUNBUFFERED=1
+    # Для интерактивного CLI нужен stdin_open и tty
+    stdin_open: true
+    tty: true
+    # только агрументы командной строки, добавляются к ENTRYPOINT
+    command: ["Docker", "--formal", "--lastname", "User"]
